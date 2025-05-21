@@ -28,8 +28,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--api-key", default="EMTPY")
     parser.add_argument("--extracted-codes", required=True)
     parser.add_argument("--page-images", required=True)
-    parser.add_argument("--formatted-metadata", required=True)
     parser.add_argument("--formatted-codes", required=True)
+    parser.add_argument("--formatting-metadata", required=True)
     args = parser.parse_args()
     return args
 
@@ -127,6 +127,9 @@ def get_structured_format(
     return structured_format
 
 
+MAX_DEPTH = 10
+
+
 def tree_str(
     *,  # enforce kwargs
     node_code: str,
@@ -134,6 +137,8 @@ def tree_str(
     code_descriptions: dict[str, str],
     indent: int = 0,
 ) -> str:
+    if indent >= MAX_DEPTH:
+        return "  " * indent + "- max depth reached\n"
     ret = "  " * indent + "- " + code_descriptions[node_code] + "\n"
     for child_code in tree_nodes[node_code]:
         ret += tree_str(
@@ -206,7 +211,7 @@ def main(args):
             ais_codes.append(code)
 
     metadata_df = pd.DataFrame(metadata)
-    metadata_df.to_csv(args.formatted_metadata, index=False)
+    metadata_df.to_csv(args.formatting_metadata, index=False)
 
     code_df = pd.DataFrame(ais_codes)
     code_df.to_csv(args.formatted_codes, index=False)
