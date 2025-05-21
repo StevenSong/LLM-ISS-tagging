@@ -165,4 +165,8 @@ dev.*
 dev-*
 dev/
 
+temp.*
+temp-*
+temp/
+
 data/
