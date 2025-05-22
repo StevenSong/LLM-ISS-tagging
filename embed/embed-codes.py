@@ -69,7 +69,7 @@ def main(args):
                 max_length=args.max_length,
             )
             batch_embs = batch_embs.to("cpu")
-            batch_embs = F.normalize(batch_embs, p=2, dim=1)
+
             for code, emb in zip(batch_codes, batch_embs):
                 h5[code] = emb
 
