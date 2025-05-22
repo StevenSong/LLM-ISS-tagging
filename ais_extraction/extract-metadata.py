@@ -16,6 +16,7 @@ BODY_REGION_MAP = {
 }
 
 STRUCTURE_TYPE_MAP = {
+    0: "Not Applicable",
     1: "Whole Area",
     2: "Vessels",
     3: "Nerves",
@@ -23,6 +24,8 @@ STRUCTURE_TYPE_MAP = {
     5: "Skeletal",
     6: "Head - LOC",
     7: "Joints",
+    8: "Not Applicable",
+    9: "Not Applicable",
 }
 
 
@@ -50,6 +53,7 @@ def main(args):
 
     df["body_region"] = body_region_idxs.replace(BODY_REGION_MAP)
     df["structure_type"] = structure_type_idxs.replace(STRUCTURE_TYPE_MAP)
+    df["severity"] = df["ais_code"].str[-1].astype(int)
 
     df.to_csv(args.output_codes, index=False)
 
